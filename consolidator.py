@@ -13,6 +13,16 @@ print("""
 """)
 print("Produced as of "+datetime.datetime.now().strftime("%Y-%m-%d %H:%M"))
 
+print("Please enter current week's FX Rate for:")
+aud_fx_rate = input("AUD (Suggest: 0.7500): ")
+cad_fx_rate = input("CAD (Suggest: 0.7300): ")
+gbp_fx_rate = input("GBP (Suggest: 1.3200): ")
+eur_fx_rate = input("EUR (Suggest: 1.1600): ")
+jpy_fx_rate = input("JPY (Suggest: 0.0091): ")
+inr_fx_rate = input("INR (Suggest: 0.0150): ")
+usd_fx_rate = 1
+
+#TODO: HOW TO VALIDATE INPUT IS POSTIVE NUMBER???????
 
 csv_filenames = os.listdir("submissions")
 csvfiles = glob.glob('/Users/Lillian/Desktop/global-cash-report-app/global-cash-report-app/submissions/*.csv')
@@ -23,6 +33,7 @@ for files in csvfiles:
     next(rd)
     for row in rd:
         wf.writerow(row)
+
 
 # print(csv_filenames)
 #
