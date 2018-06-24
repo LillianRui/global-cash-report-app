@@ -1,11 +1,7 @@
 # consolidator.py
 
-import csv
 import os
 import datetime
-import pandas as pd
-from pandas import Series, DataFrame
-import glob
 import pandas as pd
 
 
@@ -14,24 +10,6 @@ from IPython.display import display
 GLOBAL_PATH = './submissions/'
 STD_COLS = ['']
 
-print("""
--------------------------------------------------------
-              Global Weekly Cash Report
--------------------------------------------------------
-""")
-print("Produced as of "+datetime.datetime.now().strftime("%Y-%m-%d %H:%M"))
-
-
-
-csv_filenames = os.listdir("submissions")
-csvfiles = glob.glob('/Users/Lillian/Desktop/global-cash-report-app/global-cash-report-app/submissions/*.csv')
-wf = csv.writer(open('/Users/Lillian/Desktop/global-cash-report-app/global-cash-report-app/submissions/all.csv','w'),delimiter = ",")
-wf.writerow(["entity name","bank name","account number","currency","lc balance"])
-for files in csvfiles:
-    rd = csv.reader(open(files,'r'),delimiter = ',')
-    next(rd)
-    for row in rd:
-        wf.writerow(row)
 
 def _file_checker():
     files = os.listdir(GLOBAL_PATH)
@@ -43,6 +21,7 @@ def _file_checker():
         col_names = pd.read_csv(abs_fpath).columns
         if len(col_names) != 5:
             raise ValueError('{} data should have 5 cols, but got {}'.format(abs_fpath, len(col_names)))
+
 
 
 def _local_process(multiple_local_df, complete_df):
@@ -220,6 +199,13 @@ def _check_company(company_name):
 
 if __name__=="__main__":
     print("Welcome to Global Cash Report Consolidator\n")
+    print("""
+    -------------------------------------------------------
+                  Global Weekly Cash Report
+    -------------------------------------------------------
+    """)
+    print("Produced as of "+datetime.datetime.now().strftime("%Y-%m-%d %H:%M"))
+
     _file_checker()
     print("Processing submissions...\n")
 
