@@ -23,7 +23,6 @@ def _file_checker():
             raise ValueError('{} data should have 5 cols, but got {}'.format(abs_fpath, len(col_names)))
 
 
-
 def _local_process(multiple_local_df, complete_df):
     companys = list(set(complete_df['entity name'].tolist()))
     currency = list(set(complete_df['currency'].tolist()))
@@ -98,8 +97,12 @@ def process(glob, local):
 
     glob.loc[glob.shape[0]] = total_statistic
 
-    glob['%of Total'] = glob['%of Total'].round(2)
+    #glob['%of Total'] = glob['%of Total'].round(2)
+    glob = glob.round(2)
+
     glob = glob.astype(str)
+
+    glob['%of Total'] = '%'+glob['%of Total']
 
     sort_cols = ['Principal Currendies' ,'Total local currency','Exchange Rate as $1=','USD Equivalant',
                 'alpha','beta','delta','epsilon','gamma','zeta']
@@ -160,9 +163,10 @@ def _bank_process(complete_df, rate):
     total_statistic.insert(0, 'Total Cash')
 
     bank_df.loc[bank_df.shape[0]] = total_statistic
-    bank_df['% of Total'] = bank_df['% of Total'].round(2)
+    #bank_df['% of Total'] = bank_df['% of Total'].round(2)
+    bank_df = bank_df.round(2)
     bank_df  = bank_df.astype(str)
-
+    bank_df['% of Total'] = '%'+bank_df['% of Total']
     sort_cols = ['Bank','Total Cash (USD)','% of Total','alpha','beta','delta','epsilon','gamma','zeta']
     bank_df = bank_df[sort_cols]
 
@@ -192,9 +196,17 @@ def _check_company(company_name):
         return True
 
 
+def generate_complete_data():
+    files = os.listdir(GLOBAL_PATH)
+    df_collec = []
+    for file in files:
+        detail_path = GLOBAL_PATH+file
+        data = pd.read_csv(detail_path)
+        df_collec.append(data)
 
+    result = pd.concat(df_collec,sort=False,ignore_index=True)
 
-
+    return result
 
 
 if __name__=="__main__":
@@ -209,7 +221,8 @@ if __name__=="__main__":
     _file_checker()
     print("Processing submissions...\n")
 
-    complete_data = pd.read_csv('./submissions/all.csv')
+    complete_data = generate_complete_data()
+
     rate = pd.read_csv('./fx_rate.csv', skiprows=[0], names=['currency', 'rate'])
 
     A = _global_process(complete_data, rate)
