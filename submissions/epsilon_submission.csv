@@ -1,4 +1,4 @@
-CADentity name,bank name,account number,currency,lc balance
+entity name,bank name,account number,currency,lc balance
 epsilon,TD,94839583,CAD,5122.32
 epsilon,TD,94839583,CAD,135542.23
 epsilon,TD,94839583,CAD,536565
